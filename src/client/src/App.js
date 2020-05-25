@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import './materialize.scss';
 
 import TodoItem from './components/TodoItem';
+
+import M from 'materialize-css';
 
 function updateList(setTodos) {
   fetch('/api/getTodos').then((value) => {
@@ -15,6 +18,7 @@ const App = () => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
+    M.AutoInit();
     fetch('/api/getTodos').then((value) => {
       value.json().then((value) => {
         setTodos(value);
