@@ -50,6 +50,20 @@ const App = () => {
             },
           }).then(() => updateList(setTodos));
         }}
+        handleClick={(name, id) => {
+          if (name === 'remove') {
+            fetch('/api/removeTodo', {
+              method: 'POST',
+              mode: 'cors',
+              body: JSON.stringify({
+                criteria: { _id: id },
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }).then(() => updateList(setTodos));
+          }
+        }}
       />
     );
   });

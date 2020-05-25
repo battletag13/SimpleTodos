@@ -41,9 +41,18 @@ app.get('/api/getTodos', (req, res) => {
 });
 
 app.post('/api/addTodo', (req, res) => {
-  let todo = new ToDo(req.body);
+  let todo = new ToDo({ ...req.body, dateCreated: moment().toISOString() });
   todo.save();
   res.status(200).send('OK');
+});
+app.post('/api/removeTodo', (req, res) => {
+  ToDo.deleteOne(req.body.criteria, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.status(200).send('OK');
+    }
+  });
 });
 app.post('/api/updateTodo', (req, res) => {
   let updated = { completed: req.body.completed };

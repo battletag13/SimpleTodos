@@ -9,6 +9,7 @@ function TodoItem(props) {
   return (
     <div className="todo-item">
       <input
+        className="reset-checkbox"
         type="checkbox"
         checked={props.item.completed}
         onChange={() => props.handleChange(props.item._id)}
@@ -16,6 +17,13 @@ function TodoItem(props) {
       <p style={props.item.completed ? completedStyles : null}>
         {props.item.title}
       </p>
+      <button
+        style={{ marginLeft: 'auto' }}
+        className="btn btn-small btn-floating waves-effect waves-light red"
+        onClick={() => props.handleClick('remove', props.item._id)}
+      >
+        <i className="material-icons">remove</i>
+      </button>
     </div>
   );
 }
