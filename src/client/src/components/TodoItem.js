@@ -20,7 +20,10 @@ function TodoItem(props) {
       <button
         style={{ marginLeft: 'auto' }}
         className="btn btn-small btn-floating waves-effect waves-light red"
-        onClick={() => props.handleClick('remove', props.item._id)}
+        onClick={() => {
+          props.handleClick('remove', props.item._id, undefined);
+          props.updateTodos();
+        }}
       >
         <i className="material-icons">remove</i>
       </button>

@@ -5,17 +5,49 @@ import TodoItem from './components/TodoItem';
 
 import M from 'materialize-css';
 
-function updateList(setTodos) {
-  fetch('/api/getTodos').then((value) => {
-    value.json().then((value) => {
-      setTodos(value);
-    });
-  });
-}
-
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [todos, setTodos] = useState([]);
+  const [addNewInputText, setAddNewInputText] = useState('');
+
+  const updateTodos = () => {
+    fetch('/api/getTodos').then((value) => {
+      value.json().then((value) => {
+        setTodos(value);
+      });
+    });
+  };
+  const addTodo = (text) => {
+    fetch('/api/addTodo', {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify({ title: text }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    updateTodos();
+  };
+  const removeTodo = (id) => {
+    fetch('/api/removeTodo', {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify({
+        criteria: { _id: id },
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    updateTodos();
+  };
+  const handleClick = (name, id, text) => {
+    if (name === 'remove') {
+      removeTodo(id);
+    } else if (name === 'add') {
+      addTodo(text);
+    }
+  };
 
   useEffect(() => {
     M.AutoInit();
@@ -48,26 +80,43 @@ const App = () => {
             headers: {
               'Content-Type': 'application/json',
             },
-          }).then(() => updateList(setTodos));
+          }).then(() => updateTodos());
         }}
-        handleClick={(name, id) => {
-          if (name === 'remove') {
-            fetch('/api/removeTodo', {
-              method: 'POST',
-              mode: 'cors',
-              body: JSON.stringify({
-                criteria: { _id: id },
-              }),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }).then(() => updateList(setTodos));
-          }
-        }}
+        handleClick={handleClick}
+        updateTodos={updateTodos}
       />
     );
   });
-  return <div className="todo-list">{loading ? 'Loading...' : todosList}</div>;
+  return (
+    <div className="todo-list">
+      {loading ? 'Loading...' : todosList}
+      <div className="todo-item">
+        <input
+          type="text"
+          value={addNewInputText}
+          onChange={(event) => {
+            setAddNewInputText(event.target.value);
+          }}
+          onKeyDown={(event) => {
+            if (event.keyCode === 13) {
+              addTodo(addNewInputText, setTodos);
+              setAddNewInputText('');
+            }
+          }}
+        />
+        <button
+          style={{ marginLeft: 'auto' }}
+          className="btn btn-small btn-floating waves-effect waves-light red"
+          onClick={() => {
+            handleClick('add', undefined, addNewInputText);
+            setAddNewInputText('');
+          }}
+        >
+          <i className="material-icons">add</i>
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default App;
