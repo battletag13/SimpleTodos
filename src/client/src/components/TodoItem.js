@@ -8,15 +8,17 @@ function TodoItem(props) {
   };
   return (
     <div className="todo-item">
-      <input
-        className="reset-checkbox"
-        type="checkbox"
-        checked={props.item.completed}
-        onChange={() => props.handleChange(props.item._id)}
-      />
-      <p style={props.item.completed ? completedStyles : null}>
-        {props.item.title}
-      </p>
+      <div style={{ width: '70%' }}>
+        <input
+          className="reset-checkbox"
+          type="checkbox"
+          checked={props.item.completed}
+          onChange={() => props.handleChange(props.item._id)}
+        />
+        <p style={props.item.completed ? completedStyles : null}>
+          {props.item.title}
+        </p>
+      </div>
       <button
         style={{ marginLeft: 'auto' }}
         className="btn btn-small btn-floating waves-effect waves-light red"
