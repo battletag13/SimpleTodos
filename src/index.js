@@ -34,7 +34,7 @@ app.use(cors());
 // An api endpoint that returns a list of todos
 app.get('/api/getTodos', (req, res) => {
   const query = ToDo.find();
-  query.sort({ completed: 1, dateCompleted: -1 });
+  query.sort({ completed: 1, dateCompleted: -1, dateCreated: -1 });
   query.exec().then((value) => {
     res.send(JSON.stringify(value));
   });
