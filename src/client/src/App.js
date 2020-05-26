@@ -92,6 +92,7 @@ const App = () => {
       {loading ? 'Loading...' : todosList}
       <div className="todo-item">
         <input
+          style={{ width: '70%' }}
           type="text"
           value={addNewInputText}
           onChange={(event) => {
